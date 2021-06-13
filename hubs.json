@@ -1,0 +1,23 @@
+{
+  "data": [
+    {
+      "building": "The Springfield",
+      "city": "Singapore",
+      "country": {
+        "currency_code": "SGD",
+        "currency_symbol": "S$",
+        "description": "Singapore",
+        "id": 193,
+        "name": "SG"
+      },
+      "floor_number": null,
+      "postal_code": "486254",
+      "road": "19 Chempaka Kuning Link ",
+      "state": "Singapore",
+      "street_number": null,
+      "unit": null,
+      "name": "19 Chempaka Kuning Link  S486254",
+      "id": 6613
+    }
+  ]
+}
