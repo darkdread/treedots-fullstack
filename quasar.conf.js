@@ -190,9 +190,25 @@ module.exports = configure(function (/* ctx */) {
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack (/* cfg */) {
+      extendWebpack (cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
+
+        cfg.module.rules.push([
+          {
+            test: /\.ts$/,
+            exclude: /node_modules|vue\/src/,
+            loader: "ts-loader",
+            options: { appendTsSuffixTo: [/\.vue$/] }
+          },
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader',
+            options: {
+              esModule: true
+            }
+          }
+        ])
       }
     }
   }

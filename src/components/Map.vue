@@ -15,6 +15,7 @@ export default defineComponent({
     const gmap = ref();
     const ggeocoder = ref();
     const hubsDict: HubsDict = ref({});
+    const circleOverlay = ref();
 
     onMounted(async () => {
       try {
@@ -26,6 +27,8 @@ export default defineComponent({
         gdata.value = google;
         gmap.value = map;
         ggeocoder.value = geocoder;
+
+        circleOverlay.value = await import('./CircleOverlay');
 
         navigator.geolocation.getCurrentPosition((pos) => {
           const userLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
@@ -60,11 +63,11 @@ export default defineComponent({
       }
     });
 
-    return { gmapElem, gdata, gmap, ggeocoder, hubsDict };
+    return { gmapElem, gdata, gmap, ggeocoder, hubsDict, circleOverlay };
   },
   methods: {
     selectMarker (addressName: string) {
-      this.gdata.maps.event.trigger(this.hubsDict[addressName], 'click');
+      this.gdata.maps.event.trigger(this.hubsDict[addressName]['circle'], 'click');
     },
     addMarker (addressName: string, labelName: string, callback: void) {
       this.ggeocoder?.geocode({ address: addressName }, (results: any, status: any) => {
@@ -74,15 +77,25 @@ export default defineComponent({
 
         const marker = new this.gdata.maps.Marker({
           position: results[0].geometry.location,
-          label: labelName,
           map: this.gmap
         })
 
-        this.hubsDict[addressName] = marker;
+        marker.setVisible(false);
 
-        marker.addListener("click", () => {
-          marker.setLabel(null);
+        // Create circle
+        const circle = new this.circleOverlay.CircleOverlay(labelName, results[0].geometry.location, 32);
+        this.gdata.maps.event.addDomListener(circle.circle, "click", () => {
+          marker.setVisible(true);
+          circle.setMap(null);
         });
+
+        circle.setMap(this.gmap);
+        console.log(circle.circle);
+
+        this.hubsDict[addressName] = {
+          marker: marker,
+          circle: circle.circle
+        }
       });
     }
   }

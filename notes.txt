@@ -1,0 +1,9 @@
+https://stackoverflow.com/questions/42002394/importing-vue-components-in-typescript-file
+
+basics of vue
+https://jsfiddle.net/Lct8uz4o/2/
+
+https://css-tricks.com/creating-vue-js-component-instances-programmatically/
+
+CircleOverlay
+https://developers.google.com/maps/documentation/javascript/customoverlays

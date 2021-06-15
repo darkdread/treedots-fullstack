@@ -18,8 +18,13 @@
         <p>Hubs Near You</p>
         <div class="q-pa-md" style="max-width: 350px">
           <q-list bordered separator>
-            <q-item clickable v-ripple v-for="item in hubs" @click="hubsOnClick(item)" :key="item.name">
-              <q-item-section>{{ item.name }}</q-item-section>
+            <q-item clickable v-ripple v-for="(item, index) in hubs" @click="hubsOnClick(item)" :key="item.name">
+              <q-item-section><span class="text-caption">{{ item.name }}</span></q-item-section>
+              <q-item-section avatar>
+                <q-avatar color="orange" text-color="white">
+                  {{ alphabets[index] }}
+                </q-avatar>
+              </q-item-section>
             </q-item>
           </q-list>
         </div>
@@ -29,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@vue/composition-api';
+import { defineComponent, ref } from '@vue/composition-api';
 import MapsVue from 'src/components/Map.vue';
 import { Hub } from 'src/components/models';
 import HubsJson from '../../hubs.json'
@@ -40,10 +45,12 @@ export default defineComponent({
   setup() {
     const gmap = ref()
     const data: any = HubsJson.data;
+    const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     return { 
       "hubs": data,
-      gmap
+      gmap,
+      alphabets
     };
   },
   methods: {
@@ -51,12 +58,11 @@ export default defineComponent({
       this.gmap.selectMarker(item.name);
     },
     async addMarkers() {
-      const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       for(let i = 0; i < this.hubs.length; i++){
         const elem: Hub = this.hubs[i];
         // Add delay to prevent geocoding query limit.
         await new Promise(resolve => setTimeout(resolve, 1000));
-        this.gmap.addMarker(elem.name, alphabets.charAt(i % alphabets.length));
+        this.gmap.addMarker(elem.name, this.alphabets.charAt(i % this.alphabets.length));
       };
     }
   }
@@ -75,6 +81,10 @@ export default defineComponent({
 
   .hubs-near p {
     text-align: left;
+  }
+
+  span {
+    color: $grey
   }
 }
 </style>
