@@ -18,11 +18,11 @@
         <p>Hubs Near You</p>
         <div class="q-pa-md" style="max-width: 350px">
           <q-list bordered separator>
-            <q-item clickable v-ripple v-for="(item, index) in hubs" @click="hubsOnClick(item)" :key="item.name">
-              <q-item-section><span class="text-caption">{{ item.name }}</span></q-item-section>
+            <q-item clickable v-ripple v-for="item in hubMarkers" @click="hubOnClick(item.hub)" :key="item.hub.name">
+              <q-item-section><span class="text-caption">{{ item.hub.name }} {{ item.dist }}</span></q-item-section>
               <q-item-section avatar>
                 <q-avatar color="orange" text-color="white">
-                  {{ alphabets[index] }}
+                  {{ item.label }}
                 </q-avatar>
               </q-item-section>
             </q-item>
@@ -36,8 +36,10 @@
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
 import MapsVue from 'src/components/Map.vue';
-import { Hub } from 'src/components/models';
+import { Hub, HubMarker } from 'src/components/models';
 import HubsJson from '../../hubs.json'
+
+const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 export default defineComponent({
   name: 'PageIndex',
@@ -45,25 +47,39 @@ export default defineComponent({
   setup() {
     const gmap = ref()
     const data: any = HubsJson.data;
-    const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const hubMarkers: Array<HubMarker> = ref([]);
 
     return { 
       "hubs": data,
       gmap,
-      alphabets
+      hubMarkers
     };
   },
   methods: {
-    hubsOnClick (item: Hub) {
-      this.gmap.selectMarker(item.name);
+    hubOnClick (hub: Hub) {
+      this.gmap.selectMarker(hub);
     },
     async addMarkers() {
       for(let i = 0; i < this.hubs.length; i++){
         const elem: Hub = this.hubs[i];
+
         // Add delay to prevent geocoding query limit.
         await new Promise(resolve => setTimeout(resolve, 1000));
-        this.gmap.addMarker(elem.name, this.alphabets.charAt(i % this.alphabets.length));
+        const hubMarker: HubMarker = await this.gmap.addMarker(elem, alphabets[i]);
+        this.gmap.gdata.maps.event.addDomListener(hubMarker.circle.circleElem, "click", () => {
+          hubMarker.marker.setVisible(true);
+          hubMarker.circle.setMap(null);
+          this.markerOnRemove(hubMarker);
+        });
+
+        this.hubMarkers.push(hubMarker);
+        this.hubMarkers.sort((a, b) => {
+          return a.dist - b.dist;
+        });
       };
+    },
+    markerOnRemove(marker: HubMarker) {
+      this.hubMarkers.splice(this.hubMarkers.indexOf(marker), 1);
     }
   }
 });

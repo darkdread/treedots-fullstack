@@ -7,7 +7,7 @@ export class CircleOverlay extends google.maps.OverlayView {
     private size_: number;
     private div_: HTMLElement | null;
     private circleComponent_: CircleItem;
-    circle: HTMLDivElement | null;
+    circleElem: HTMLDivElement | null;
 
     constructor(label: string, position: google.maps.LatLng, size: number) {
       super();
@@ -26,7 +26,7 @@ export class CircleOverlay extends google.maps.OverlayView {
         }
       });
       circleInstance.$mount();
-      this.circle = circleInstance.$el;
+      this.circleElem = circleInstance.$el;
 
       // Define a property to hold the image's div. We'll
       // actually create this div upon receipt of the onAdd()
@@ -44,7 +44,7 @@ export class CircleOverlay extends google.maps.OverlayView {
       this.div_.style.borderWidth = "0px";
       this.div_.style.position = "absolute";
 
-      this.div_.appendChild(this.circle);
+      this.div_.appendChild(this.circleElem);
 
       const panes = this.getPanes()!;
     //   panes.overlayLayer.appendChild(this.div_);

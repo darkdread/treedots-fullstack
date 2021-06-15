@@ -1,3 +1,5 @@
+import { CircleOverlay } from "./CircleOverlay";
+
 export interface Todo {
   id: number;
   content: string;
@@ -31,5 +33,13 @@ export interface Hub {
 }
 
 export interface HubsDict {
-  [key: string]: any
+  [key: string]: HubMarker,
+}
+
+export interface HubMarker {
+  dist: number,
+  circle: CircleOverlay,
+  marker: any,
+  hub: Hub,
+  label: string
 }
