@@ -9,3 +9,9 @@ CircleOverlay
 https://developers.google.com/maps/documentation/javascript/customoverlays
 https://newbedev.com/make-custom-overlay-clickable-google-maps-api-v3
 https://stackoverflow.com/questions/1502590/calculate-distance-between-two-points-in-google-maps-v3
+
+MarkerSvg
+https://icons-for-free.com/svg+map+map+pin+marker+pin+icon-1320184912273635197/
+
+To reposition svg
+https://aydos.com/svgedit/
