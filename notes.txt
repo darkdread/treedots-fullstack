@@ -1,8 +1,11 @@
+Basics of vue
+https://jsfiddle.net/Lct8uz4o/2/
+https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+
+Importing CircleItem
 https://stackoverflow.com/questions/42002394/importing-vue-components-in-typescript-file
 
-basics of vue
-https://jsfiddle.net/Lct8uz4o/2/
-
+Creating CircleOverlay
 https://css-tricks.com/creating-vue-js-component-instances-programmatically/
 
 CircleOverlay

@@ -68,6 +68,13 @@ export class CircleOverlay extends google.maps.OverlayView {
       }
     }
 
+    setVisible(toShow: boolean){
+      if (this.div_){
+        const visibility = toShow ? 'block' : 'none';
+        this.div_.style.display = visibility;
+      }
+    }
+
     /**
      * The onRemove() method will be called automatically from the API if
      * we ever set the overlay's map property to 'null'.

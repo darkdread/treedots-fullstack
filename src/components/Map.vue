@@ -33,7 +33,8 @@ export default defineComponent({
         const geocoder = new google.maps.Geocoder();
         const map = new google.maps.Map(gmapElem.value, {
           zoom: 14,
-          disableDefaultUI: true
+          disableDefaultUI: true,
+          disableDoubleClickZoom: true
         });
         gdata.value = google;
         gmap.value = map;
@@ -45,6 +46,18 @@ export default defineComponent({
           userLocation.value = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 
           map.setCenter(userLocation.value);
+
+          new google.maps.Circle({
+            strokeColor: "#FFFFFF",
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: "#007AFF",
+            fillOpacity: 1,
+            map,
+            center: userLocation.value,
+            radius: 100,
+          });
+
           new google.maps.Circle({
             strokeColor: "#0000FF",
             strokeOpacity: 0.1,
